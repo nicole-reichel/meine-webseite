@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Doors – Break On Through</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:   #0a0a0a;
+      --dark:    #111111;
+      --gold:    #c9a84c;
+      --gold2:   #e8c96a;
+      --smoke:   #1a1a1a;
+      --text:    #e8e0d0;
+      --muted:   #7a7060;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      position: relative;
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(201,168,76,.18) 0%, transparent 65%),
+        radial-gradient(ellipse at 80% 80%, rgba(180,60,20,.12) 0%, transparent 60%),
+        var(--black);
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(255,255,255,.012) 2px,
+        rgba(255,255,255,.012) 4px
+      );
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Inter', sans-serif;
+      font-size: .72rem;
+      font-weight: 500;
+      letter-spacing: .35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3.5rem, 12vw, 9rem);
+      font-weight: 900;
+      line-height: .95;
+      letter-spacing: -.02em;
+      background: linear-gradient(135deg, var(--gold2) 0%, var(--gold) 50%, #a07820 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+    }
+
+    .hero-sub {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1rem, 3vw, 1.5rem);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--muted);
+      margin-bottom: 3rem;
+      max-width: 480px;
+    }
+
+    .hero-cta {
+      display: inline-block;
+      padding: .9rem 2.4rem;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      font-size: .85rem;
+      font-weight: 500;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background .25s, color .25s;
+      cursor: pointer;
+      background: transparent;
+    }
+
+    .hero-cta:hover {
+      background: var(--gold);
+      color: var(--black);
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      width: 60px;
+      height: 1px;
+      background: var(--gold);
+      margin: 0 auto 5rem;
+      opacity: .4;
+    }
+
+    /* ── ABOUT ── */
+    .about {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 6rem 2rem;
+      text-align: center;
+    }
+
+    .section-label {
+      font-size: .7rem;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.2rem;
+    }
+
+    .about h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1.8rem;
+    }
+
+    .about p {
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 640px;
+      margin: 0 auto 1.2rem;
+    }
+
+    /* ── QUOTE ── */
+    .quote-section {
+      background: var(--smoke);
+      border-top: 1px solid rgba(201,168,76,.1);
+      border-bottom: 1px solid rgba(201,168,76,.1);
+      padding: 5rem 2rem;
+      text-align: center;
+    }
+
+    blockquote {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.4rem, 4vw, 2.4rem);
+      font-style: italic;
+      color: var(--text);
+      max-width: 780px;
+      margin: 0 auto 1.5rem;
+      line-height: 1.4;
+    }
+
+    blockquote::before { content: '\201C'; color: var(--gold); }
+    blockquote::after  { content: '\201D'; color: var(--gold); }
+
+    .quote-author {
+      font-size: .8rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── TRACKS ── */
+    .tracks {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 6rem 2rem;
+    }
+
+    .tracks h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .track-list {
+      list-style: none;
+    }
+
+    .track-list li {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      padding: 1.2rem 0;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      cursor: default;
+      transition: color .2s;
+    }
+
+    .track-list li:hover { color: var(--gold); }
+
+    .track-num {
+      font-size: .75rem;
+      color: var(--muted);
+      width: 1.5rem;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .track-name {
+      flex: 1;
+      font-size: 1rem;
+      font-weight: 400;
+    }
+
+    .track-dur {
+      font-size: .8rem;
+      color: var(--muted);
+    }
+
+    /* ── LEAD FORM ── */
+    .lead {
+      background: var(--smoke);
+      border-top: 1px solid rgba(201,168,76,.1);
+      padding: 6rem 2rem;
+      text-align: center;
+    }
+
+    .lead h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      margin-bottom: .8rem;
+    }
+
+    .lead p {
+      color: var(--muted);
+      font-size: .95rem;
+      margin-bottom: 2.5rem;
+    }
+
+    #lead-form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .8rem;
+      justify-content: center;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    #lead-form input {
+      flex: 1 1 200px;
+      padding: .85rem 1.2rem;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.12);
+      color: var(--text);
+      font-size: .95rem;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      transition: border-color .2s;
+    }
+
+    #lead-form input::placeholder { color: var(--muted); }
+    #lead-form input:focus { border-color: var(--gold); }
+
+    #lead-form button {
+      padding: .85rem 2rem;
+      background: var(--gold);
+      color: var(--black);
+      border: none;
+      font-size: .85rem;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background .2s;
+      white-space: nowrap;
+    }
+
+    #lead-form button:hover { background: var(--gold2); }
+
+    .form-status {
+      margin-top: 1rem;
+      font-size: .85rem;
+      color: var(--gold);
+      min-height: 1.2em;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 2.5rem 2rem;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,.06);
+      font-size: .78rem;
+      color: var(--muted);
+      letter-spacing: .08em;
+    }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <section class="hero">
+    <p class="hero-eyebrow">Los Angeles · 1965 – 1973</p>
+    <h1>The Doors</h1>
+    <p class="hero-sub">Break on through to the other side.</p>
+    <a class="hero-cta" href="#lead">Insider-Updates erhalten</a>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about reveal">
+    <p class="section-label">Die Band</p>
+    <h2>Musik als Tor zu einer anderen Welt</h2>
+    <p>The Doors verbanden Bluesrock, Psychedelia und Poesie zu einem Sound, der eine Generation prägte. Jim Morrison, Ray Manzarek, Robby Krieger und John Densmore erschufen Klassiker, die bis heute nachwirken.</p>
+    <p>Benannt nach Aldous Huxleys Essay „The Doors of Perception" – eine Einladung, die Grenzen der Wahrnehmung zu überschreiten.</p>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- QUOTE -->
+  <section class="quote-section reveal">
+    <blockquote>People are strange when you're a stranger.</blockquote>
+    <p class="quote-author">Jim Morrison</p>
+  </section>
+
+  <!-- TRACKS -->
+  <section class="tracks reveal">
+    <p class="section-label">Legenden</p>
+    <h2>Unvergessliche Songs</h2>
+    <ul class="track-list">
+      <li><span class="track-num">01</span><span class="track-name">Light My Fire</span><span class="track-dur">7:06</span></li>
+      <li><span class="track-num">02</span><span class="track-name">Break On Through (To the Other Side)</span><span class="track-dur">2:28</span></li>
+      <li><span class="track-num">03</span><span class="track-name">Riders on the Storm</span><span class="track-dur">7:14</span></li>
+      <li><span class="track-num">04</span><span class="track-name">People Are Strange</span><span class="track-dur">2:12</span></li>
+      <li><span class="track-num">05</span><span class="track-name">The End</span><span class="track-dur">11:41</span></li>
+      <li><span class="track-num">06</span><span class="track-name">Love Her Madly</span><span class="track-dur">3:18</span></li>
+      <li><span class="track-num">07</span><span class="track-name">L.A. Woman</span><span class="track-dur">7:49</span></li>
+    </ul>
+  </section>
+
+  <!-- LEAD FORM -->
+  <section class="lead reveal" id="lead">
+    <p class="section-label">Bleib in Verbindung</p>
+    <h2>Insider-Updates & Neuigkeiten</h2>
+    <p>Trag dich ein und erhalte exklusive Inhalte rund um The Doors.</p>
+    <form id="lead-form" novalidate>
+      <input type="text"  name="firstname" placeholder="Vorname"       required autocomplete="given-name" />
+      <input type="email" name="email"     placeholder="E-Mail-Adresse" required autocomplete="email" />
+      <button type="submit">Eintragen</button>
+    </form>
+    <p class="form-status" id="form-status"></p>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© The Doors · Elektra Records · Alle Rechte vorbehalten</p>
+  </footer>
+
+  <script>
+    // Scroll-Reveal
+    const observer = new IntersectionObserver(
+      entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+      { threshold: 0.12 }
+    );
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Lead-Formular
+    document.getElementById('lead-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const status = document.getElementById('form-status');
+      const data = {
+        firstname: this.firstname.value.trim(),
+        email:     this.email.value.trim(),
+      };
+
+      if (!data.firstname || !data.email) {
+        status.textContent = 'Bitte alle Felder ausfüllen.';
+        return;
+      }
+
+      status.textContent = 'Wird gesendet …';
+
+      try {
+        const res = await fetch('/api/lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+        status.textContent = res.ok
+          ? '✓ Du bist dabei! Schau auf dein Postfach.'
+          : 'Fehler beim Senden. Bitte versuche es erneut.';
+      } catch {
+        status.textContent = '✓ Eingetragen! (API noch nicht aktiv)';
+      }
+
+      this.reset();
+    });
+  </script>
+
+</body>
+</html>
