@@ -485,36 +485,7 @@
     <p class="section-label">Diskografie</p>
     <h2>Die Alben</h2>
     <div class="album-grid">
-      <div class="album-card">
-        <img src="https://upload.wikimedia.org/wikipedia/en/b/bc/The_Doors_album_cover.jpg" alt="The Doors (1967)" />
-        <span class="album-title">The Doors</span>
-        <span class="album-year">1967</span>
-      </div>
-      <div class="album-card">
-        <img src="https://upload.wikimedia.org/wikipedia/en/9/9b/StrangeDays.jpg" alt="Strange Days (1967)" />
-        <span class="album-title">Strange Days</span>
-        <span class="album-year">1967</span>
-      </div>
-      <div class="album-card">
-        <img src="https://upload.wikimedia.org/wikipedia/en/5/5c/Waiting_for_the_Sun.jpg" alt="Waiting for the Sun (1968)" />
-        <span class="album-title">Waiting for the Sun</span>
-        <span class="album-year">1968</span>
-      </div>
-      <div class="album-card">
-        <img src="https://upload.wikimedia.org/wikipedia/en/0/0c/Soft_Parade.jpg" alt="The Soft Parade (1969)" />
-        <span class="album-title">The Soft Parade</span>
-        <span class="album-year">1969</span>
-      </div>
-      <div class="album-card">
-        <img src="https://upload.wikimedia.org/wikipedia/en/b/b2/Morrison_Hotel.jpg" alt="Morrison Hotel (1970)" />
-        <span class="album-title">Morrison Hotel</span>
-        <span class="album-year">1970</span>
-      </div>
-      <div class="album-card">
-        <img src="https://upload.wikimedia.org/wikipedia/en/b/b6/LA_Woman.jpg" alt="L.A. Woman (1971)" />
-        <span class="album-title">L.A. Woman</span>
-        <span class="album-year">1971</span>
-      </div>
+      <!-- wird per JS befüllt -->
     </div>
   </section>
 
@@ -542,6 +513,45 @@
   </footer>
 
   <script>
+    // Album Cover via iTunes API
+    const ALBUMS = [
+      { title: 'The Doors',           year: '1967' },
+      { title: 'Strange Days',        year: '1967' },
+      { title: 'Waiting for the Sun', year: '1968' },
+      { title: 'The Soft Parade',     year: '1969' },
+      { title: 'Morrison Hotel',      year: '1970' },
+      { title: 'L.A. Woman',          year: '1971' },
+    ];
+
+    async function loadAlbumCovers() {
+      const grid = document.querySelector('.album-grid');
+      try {
+        const res  = await fetch('https://itunes.apple.com/search?term=The+Doors&entity=album&attribute=artistTerm&limit=50&country=US');
+        const data = await res.json();
+
+        const matched = ALBUMS.map(album => {
+          const found = data.results.find(r =>
+            r.collectionName.toLowerCase().includes(album.title.toLowerCase()) &&
+            String(new Date(r.releaseDate).getFullYear()) === album.year
+          ) || data.results.find(r =>
+            r.collectionName.toLowerCase().includes(album.title.toLowerCase())
+          );
+          return { ...album, artwork: found ? found.artworkUrl100.replace('100x100', '400x400') : null };
+        });
+
+        grid.innerHTML = matched.map(a => a.artwork ? `
+          <div class="album-card">
+            <img src="${a.artwork}" alt="${a.title} (${a.year})" loading="lazy" />
+            <span class="album-title">${a.title}</span>
+            <span class="album-year">${a.year}</span>
+          </div>` : ''
+        ).join('');
+      } catch {
+        grid.innerHTML = '<p style="color:var(--muted);grid-column:1/-1">Cover konnten nicht geladen werden.</p>';
+      }
+    }
+    loadAlbumCovers();
+
     // Scroll-Reveal
     const observer = new IntersectionObserver(
       entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
