@@ -279,6 +279,66 @@
       color: var(--muted);
     }
 
+    /* ── ALBUMS ── */
+    .albums {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 6rem 2rem;
+      text-align: center;
+    }
+
+    .albums h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      margin-bottom: 3rem;
+      background: linear-gradient(135deg, var(--gold2) 0%, var(--gold) 60%, #b8860b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .album-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 2rem;
+    }
+
+    .album-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .8rem;
+      cursor: default;
+    }
+
+    .album-card img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      display: block;
+      filter: sepia(20%) brightness(.9) contrast(1.05);
+      transition: filter .3s, transform .3s;
+    }
+
+    .album-card:hover img {
+      filter: sepia(0%) brightness(1) contrast(1);
+      transform: scale(1.04);
+    }
+
+    .album-title {
+      font-size: .82rem;
+      font-weight: 500;
+      color: var(--text);
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    .album-year {
+      font-size: .72rem;
+      color: var(--muted);
+      letter-spacing: .1em;
+    }
+
     /* ── LEAD FORM ── */
     .lead {
       background: var(--smoke);
@@ -418,6 +478,44 @@
       <li><span class="track-num">06</span><span class="track-name">Love Her Madly</span><span class="track-dur">3:18</span></li>
       <li><span class="track-num">07</span><span class="track-name">L.A. Woman</span><span class="track-dur">7:49</span></li>
     </ul>
+  </section>
+
+  <!-- ALBUMS -->
+  <section class="albums reveal">
+    <p class="section-label">Diskografie</p>
+    <h2>Die Alben</h2>
+    <div class="album-grid">
+      <div class="album-card">
+        <img src="https://upload.wikimedia.org/wikipedia/en/b/bc/The_Doors_album_cover.jpg" alt="The Doors (1967)" />
+        <span class="album-title">The Doors</span>
+        <span class="album-year">1967</span>
+      </div>
+      <div class="album-card">
+        <img src="https://upload.wikimedia.org/wikipedia/en/9/9b/StrangeDays.jpg" alt="Strange Days (1967)" />
+        <span class="album-title">Strange Days</span>
+        <span class="album-year">1967</span>
+      </div>
+      <div class="album-card">
+        <img src="https://upload.wikimedia.org/wikipedia/en/5/5c/Waiting_for_the_Sun.jpg" alt="Waiting for the Sun (1968)" />
+        <span class="album-title">Waiting for the Sun</span>
+        <span class="album-year">1968</span>
+      </div>
+      <div class="album-card">
+        <img src="https://upload.wikimedia.org/wikipedia/en/0/0c/Soft_Parade.jpg" alt="The Soft Parade (1969)" />
+        <span class="album-title">The Soft Parade</span>
+        <span class="album-year">1969</span>
+      </div>
+      <div class="album-card">
+        <img src="https://upload.wikimedia.org/wikipedia/en/b/b2/Morrison_Hotel.jpg" alt="Morrison Hotel (1970)" />
+        <span class="album-title">Morrison Hotel</span>
+        <span class="album-year">1970</span>
+      </div>
+      <div class="album-card">
+        <img src="https://upload.wikimedia.org/wikipedia/en/b/b6/LA_Woman.jpg" alt="L.A. Woman (1971)" />
+        <span class="album-title">L.A. Woman</span>
+        <span class="album-year">1971</span>
+      </div>
+    </div>
   </section>
 
   <!-- MOOD IMAGE -->
