@@ -40,9 +40,8 @@
       padding: 2rem;
       position: relative;
       background:
-        radial-gradient(ellipse at 50% 0%, rgba(201,168,76,.18) 0%, transparent 65%),
-        radial-gradient(ellipse at 80% 80%, rgba(180,60,20,.12) 0%, transparent 60%),
-        var(--black);
+        linear-gradient(to bottom, rgba(10,10,10,.55) 0%, rgba(10,10,10,.75) 60%, rgba(10,10,10,1) 100%),
+        url('https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=1600&q=80&fit=crop') center/cover no-repeat;
       overflow: hidden;
     }
 
@@ -111,6 +110,47 @@
     .hero-cta:hover {
       background: var(--gold);
       color: var(--black);
+    }
+
+    /* ── ABOUT IMAGE ── */
+    .about-img {
+      width: 100%;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 2rem 4rem;
+    }
+
+    .about-img img {
+      width: 100%;
+      height: 340px;
+      object-fit: cover;
+      object-position: center 30%;
+      display: block;
+      filter: grayscale(30%) brightness(.85);
+    }
+
+    /* ── MOOD IMAGE ── */
+    .mood-img {
+      width: 100%;
+      max-height: 420px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .mood-img img {
+      width: 100%;
+      height: 420px;
+      object-fit: cover;
+      object-position: center 40%;
+      display: block;
+      filter: grayscale(20%) brightness(.7) sepia(20%);
+    }
+
+    .mood-img::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(10,10,10,.3), rgba(10,10,10,.7));
     }
 
     /* ── DIVIDER ── */
@@ -340,6 +380,11 @@
     <p>Benannt nach Aldous Huxleys Essay „The Doors of Perception" – eine Einladung, die Grenzen der Wahrnehmung zu überschreiten.</p>
   </section>
 
+  <!-- ABOUT IMAGE -->
+  <div class="about-img reveal">
+    <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=1200&q=80&fit=crop" alt="Konzert Atmosphäre" />
+  </div>
+
   <div class="divider"></div>
 
   <!-- QUOTE -->
@@ -362,6 +407,11 @@
       <li><span class="track-num">07</span><span class="track-name">L.A. Woman</span><span class="track-dur">7:49</span></li>
     </ul>
   </section>
+
+  <!-- MOOD IMAGE -->
+  <div class="mood-img">
+    <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=1600&q=80&fit=crop" alt="Bühne Licht" />
+  </div>
 
   <!-- LEAD FORM -->
   <section class="lead reveal" id="lead">
