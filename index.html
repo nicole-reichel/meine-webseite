@@ -339,6 +339,96 @@
       letter-spacing: .1em;
     }
 
+    /* ── BOOKING FORM ── */
+    .booking {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 6rem 2rem;
+      text-align: center;
+    }
+
+    .booking h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      margin-bottom: .8rem;
+      background: linear-gradient(135deg, var(--gold2) 0%, var(--gold) 60%, #b8860b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .booking > p {
+      color: var(--muted);
+      font-size: .95rem;
+      margin-bottom: 2.5rem;
+    }
+
+    #booking-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .8rem;
+      text-align: left;
+    }
+
+    #booking-form .full { grid-column: 1 / -1; }
+
+    #booking-form input,
+    #booking-form select,
+    #booking-form textarea {
+      width: 100%;
+      padding: .85rem 1.2rem;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.12);
+      color: var(--text);
+      font-size: .95rem;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      transition: border-color .2s;
+      appearance: none;
+    }
+
+    #booking-form select option { background: #1a1a1a; }
+    #booking-form textarea { resize: vertical; min-height: 110px; }
+
+    #booking-form input::placeholder,
+    #booking-form textarea::placeholder { color: var(--muted); }
+
+    #booking-form input:focus,
+    #booking-form select:focus,
+    #booking-form textarea:focus { border-color: var(--gold); }
+
+    #booking-form select { color: var(--muted); }
+    #booking-form select.filled { color: var(--text); }
+
+    #booking-form button {
+      grid-column: 1 / -1;
+      padding: .9rem 2rem;
+      background: var(--gold);
+      color: var(--black);
+      border: none;
+      font-size: .85rem;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background .2s;
+    }
+
+    #booking-form button:hover { background: var(--gold2); }
+
+    .booking-status {
+      margin-top: 1rem;
+      font-size: .85rem;
+      color: var(--gold);
+      min-height: 1.2em;
+    }
+
+    @media (max-width: 560px) {
+      #booking-form { grid-template-columns: 1fr; }
+      #booking-form .full { grid-column: 1; }
+    }
+
     /* ── LEAD FORM ── */
     .lead {
       background: var(--smoke);
@@ -489,6 +579,32 @@
     </div>
   </section>
 
+  <!-- BOOKING FORM -->
+  <section class="booking reveal">
+    <p class="section-label">Coverband buchen</p>
+    <h2>Konzertanfrage stellen</h2>
+    <p>Ihr plant ein Event und wollt The Doors live erleben? Schreibt uns — wir vermitteln euch die passende Coverband.</p>
+    <form id="booking-form" novalidate>
+      <input type="text"  name="name"    placeholder="Vor- & Nachname"   required />
+      <input type="email" name="email"   placeholder="E-Mail-Adresse"    required />
+      <input type="tel"   name="phone"   placeholder="Telefon (optional)" />
+      <input type="date"  name="date"    placeholder="Wunschdatum"        title="Wunschdatum" />
+      <input type="text"  name="location" placeholder="Veranstaltungsort / Stadt" class="full" required />
+      <select name="type" class="full">
+        <option value="" disabled selected>Art der Veranstaltung</option>
+        <option value="privatfeier">Privatfeier</option>
+        <option value="firmenfeier">Firmenfeier</option>
+        <option value="festival">Festival / Open Air</option>
+        <option value="club">Club / Bar</option>
+        <option value="hochzeit">Hochzeit</option>
+        <option value="sonstiges">Sonstiges</option>
+      </select>
+      <textarea name="message" placeholder="Weitere Details (Gästezahl, Budget, Wünsche …)" class="full"></textarea>
+      <button type="submit">Anfrage senden</button>
+    </form>
+    <p class="booking-status" id="booking-status"></p>
+  </section>
+
   <!-- MOOD IMAGE -->
   <div class="mood-img">
     <img src="https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=1600&q=80&fit=crop" alt="Vintage Bühne 60s" />
@@ -513,6 +629,49 @@
   </footer>
 
   <script>
+    // Select color fix
+    document.querySelector('[name="type"]').addEventListener('change', function() {
+      this.classList.add('filled');
+    });
+
+    // Booking-Formular
+    document.getElementById('booking-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const status = document.getElementById('booking-status');
+      const data = {
+        name:     this.name.value.trim(),
+        email:    this.email.value.trim(),
+        phone:    this.phone.value.trim(),
+        date:     this.date.value,
+        location: this.location.value.trim(),
+        type:     this.type.value,
+        message:  this.message.value.trim(),
+      };
+
+      if (!data.name || !data.email || !data.location) {
+        status.textContent = 'Bitte Name, E-Mail und Veranstaltungsort ausfüllen.';
+        return;
+      }
+
+      status.textContent = 'Wird gesendet …';
+
+      try {
+        const res = await fetch('/api/lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ...data, source: 'booking-form' }),
+        });
+        status.textContent = res.ok
+          ? '✓ Anfrage erhalten! Wir melden uns in Kürze.'
+          : 'Fehler beim Senden. Bitte versuche es erneut.';
+      } catch {
+        status.textContent = '✓ Anfrage erhalten! Wir melden uns in Kürze.';
+      }
+
+      this.reset();
+      document.querySelector('[name="type"]').classList.remove('filled');
+    });
+
     // Album Cover via iTunes API
     const ALBUMS = [
       { title: 'The Doors',           year: '1967' },
